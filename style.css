@@ -1,0 +1,74 @@
+*::before,
+*,
+*::after{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'Fira Sans', sans-serif;
+  font-weight: 300;
+}
+
+.tray{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+
+  background: #f5f5f5;
+}
+
+.tray__art{
+  float: left;
+  width: 10%;
+}
+
+.tray__art img{
+  display: block;
+  width: 100%;
+}
+
+.tray__main{
+  float: left;
+  width: 90%;
+}
+
+.tray__main__progress{
+  appearance: none; /* Reset the default appearance */
+
+  display: block;
+  width: 100%;
+  height: 5px;
+  border: 0;
+}
+
+.tray__main__progress::-webkit-progress-bar{
+  background-color: rgba(255, 255, 255, .1);
+}
+
+.tray__main__progress::-webkit-progress-value{
+  background-image: linear-gradient(to right, #333, #666);
+}
+
+.tray__main__details,
+.tray__main__controls{
+  padding: .5em;
+  color: #111;
+}
+
+.tray__main__details{
+  float: left;
+  width: 33.33%;
+
+  font-size: 1.25em;
+}
+
+.tray__main__details__name{
+  font-weight: 400;
+}
+
+.tray__main__controls{
+  float: left;
+  width: 66.66%;
+}
