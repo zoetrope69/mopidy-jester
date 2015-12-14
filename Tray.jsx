@@ -7,7 +7,7 @@ const mopidy = new Mopidy({
   callingConvention: 'by-position-or-by-name'
 });
 
-export default class Track extends Component {
+export default class Tray extends Component {
 
 	constructor(props) {
 

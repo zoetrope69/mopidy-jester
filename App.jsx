@@ -53,7 +53,7 @@ export default class App extends Component {
 		{connecting && !connected ? (
 			<p>Connecting to Mopidy...</p>
 		) : (
-			<Track />
+			<Tray />
 		)}
 		</div>
 		);
