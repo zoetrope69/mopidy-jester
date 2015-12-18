@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import App from './App';
 
-require('./style.css');
+require('../styles/style.css');
 
 React.render(<App/>, document.querySelector('#root'));
