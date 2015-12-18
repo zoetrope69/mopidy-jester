@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 export default class Sidebar extends Component {
   static propTypes: {
     mopidy: PropTypes.object.isRequired,
-		current: PropTypes.object.isRequired
-	}
+    current: PropTypes.object.isRequired
+  }
 
   togglePlaying() {
     const { mopidy, current } = this.props;
@@ -32,9 +32,9 @@ export default class Sidebar extends Component {
     return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
   }
 
-	render() {
+  render() {
 
-		const { current } = this.props;
+    const { current } = this.props;
 
     let progress = 0;
 
@@ -46,48 +46,48 @@ export default class Sidebar extends Component {
       }
     }
 
-		return (
-    <div className="sidebar">
+    return (
+      <div className="sidebar">
 
-      <div className="sidebar__art">
-        {current.image && current.image.length > 0 && (
-        <div>
-          <img className="sidebar__art__foreground" src={current.image} />
-          <img className="sidebar__art__background" src={current.image} />
+        <div className="sidebar__art">
+          {current.image && current.image.length > 0 && (
+          <div>
+            <img className="sidebar__art__foreground" src={current.image} />
+            <img className="sidebar__art__background" src={current.image} />
+          </div>
+          )}
         </div>
+
+        {(!current || !current.tlid || current.tlid === -1) ? (
+          <div className="sidebar__main sidebar__main--no-song">No song playing yo..</div>
+        ) : (
+          <div className="sidebar__main">
+
+            <div className="progress">
+              <div className="progress__bar" style={{ width: `${progress}%` }}></div>
+            </div>
+            <div className="progress__details">
+              <span className="progress__details__current">{this.millisToMinutesAndSeconds(current.position)}</span>
+              <span className="progress__details__seperator">/</span>
+              <span className="progress__details__length">{this.millisToMinutesAndSeconds(current.track.length)}</span>
+            </div>
+
+            <div className="sidebar__main__details">
+              <p className="sidebar__main__details__name">{current.track.name}</p>
+              <p className="sidebar__main__details__album">{typeof current.track.album !== 'undefined' && current.track.album.name}</p>
+              <p className="sidebar__main__details__artist">{typeof current.track.artists !== 'undefined' && current.track.artists[0].name}</p>
+            </div>
+
+            <div className="controls">
+              <button className="control control--previous" onClick={this.previousSong.bind(this)}>Previous</button>
+              <button className={`control control--${current.state}`} onClick={this.togglePlaying.bind(this)}>{current.state}</button>
+              <button className="control control--next" onClick={this.nextSong.bind(this)}>Next</button>
+            </div>
+
+          </div>
         )}
-  		</div>
 
-      {(!current || !current.tlid || current.tlid === -1) ? (
-      <div className="sidebar__main sidebar__main--no-song">No song playing yo..</div>
-      ) : (
-      <div className="sidebar__main">
-
-        <div className="progress">
-          <div className="progress__bar" style={{ width: `${progress}%` }}></div>
-        </div>
-        <div className="progress__details">
-          <span className="progress__details__current">{this.millisToMinutesAndSeconds(current.position)}</span>
-          <span className="progress__details__seperator">/</span>
-          <span className="progress__details__length">{this.millisToMinutesAndSeconds(current.track.length)}</span>
-        </div>
-
-        <div className="sidebar__main__details">
-          <p className="sidebar__main__details__name">{current.track.name}</p>
-          <p className="sidebar__main__details__album">{typeof current.track.album !== 'undefined' && current.track.album.name}</p>
-          <p className="sidebar__main__details__artist">{typeof current.track.artists !== 'undefined' && current.track.artists[0].name}</p>
-        </div>
-
-        <div className="controls">
-          <button className="control control--previous" onClick={this.previousSong.bind(this)}>Previous</button>
-          <button className={`control control--${current.state}`} onClick={this.togglePlaying.bind(this)}>{current.state}</button>
-          <button className="control control--next" onClick={this.nextSong.bind(this)}>Next</button>
-        </div>
-
-      </div>
-      )}
-
-		</div>
-		);
-	}
+    </div>
+  );
+  }
 }

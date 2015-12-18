@@ -15,17 +15,17 @@ const timerIncrementAmount = 1000;
 
 export default class App extends Component {
 
-	constructor(props) {
+  constructor(props) {
 
-		super(props);
+    super(props);
 
-		this.state = {
-			connecting: false,
-			connected: false,
-			error: '',
+    this.state = {
+      connecting: false,
+      connected: false,
+      error: '',
       loading: false,
       loaded: false,
-			tracks: {
+      tracks: {
         list: [],
         current: {
           tlid: -1,
@@ -35,26 +35,26 @@ export default class App extends Component {
           image: ''
         }
       }
-		};
+    };
 
-	}
+  }
 
   componentWillUpdate() {
     // console.log('state: ', this.state);
   }
 
-	componentWillMount() {
+  componentWillMount() {
 
-		const that = this;
+    const that = this;
 
-		that.setState({ connecting: true });
+    that.setState({ connecting: true });
 
-		mopidy.on('state:online', () => {
+    mopidy.on('state:online', () => {
 
-    	that.setState({
-				connecting: false,
-				connected: true
-			});
+      that.setState({
+        connecting: false,
+        connected: true
+      });
 
       this.updateState(() => {
         that.startTimer();
@@ -88,13 +88,11 @@ export default class App extends Component {
 
     });
 
-		mopidy.on('state:offline', () => {
-			that.setState({
-				connected: false
-			});
-		});
+    mopidy.on('state:offline', () => {
+      that.setState({ connected: false });
+    });
 
-	}
+  }
 
   componentWillUnmount() {
     this.stopTimer();
@@ -122,65 +120,65 @@ export default class App extends Component {
 
   getAlbumArt(size = 'extralarge') {
     return new Promise((resolve, reject) => {
-  		const that = this;
+      const that = this;
 
-  		const validSizes = ['small', 'medium', 'large', 'extralarge'];
+      const validSizes = ['small', 'medium', 'large', 'extralarge'];
 
-  		// is the album art request a valid size
-  		if (validSizes.indexOf(size) < 0) {
+      // is the album art request a valid size
+      if (validSizes.indexOf(size) < 0) {
         reject();
-  		}
+      }
 
       const { track } = this.state.tracks.current;
 
-  		if (track) {
+      if (track) {
 
-  			if (track.album && typeof track.album.images !== 'undefined') {
-  				return resolve(track.album.images[0]);
-  			} else {
+        if (track.album && typeof track.album.images !== 'undefined') {
+          return resolve(track.album.images[0]);
+        } else {
 
           let trackImage = '';
 
-        	const artist = track.artists[0].name;
-      		const album = track.album.name;
+          const artist = track.artists[0].name;
+          const album = track.album.name;
 
-  				request
-  					.post(`http://ws.audioscrobbler.com/2.0/?method=album.getInfo&api_key=${lastFmApiKey}&format=json`)
-  					.query({ artist, album })
-  					.set('Accept', 'application/json')
-  					.end(function(err, res){
-  						if (err) {
-  							console.log(err);
+          request
+            .post(`http://ws.audioscrobbler.com/2.0/?method=album.getInfo&api_key=${lastFmApiKey}&format=json`)
+            .query({ artist, album })
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+              if (err) {
+                console.log(err);
                 return resolve(trackImage);
-  						}
+              }
 
-  						const data = res.body;
+              const data = res.body;
 
-  						const images = data.album.image;
+              const images = data.album.image;
 
               for (var i = 0; i < images.length; i++) {
-  							var image = images[i];
+                var image = images[i];
 
-  							// if size specified
-  							if (image.size === size) {
-  								if (typeof image['#text'] !== 'undefined' && image['#text'] !== '') {
+                // if size specified
+                if (image.size === size) {
+                  if (typeof image['#text'] !== 'undefined' && image['#text'] !== '') {
                     return resolve(image['#text']);
-  								}
-  							}
-  						}
+                  }
+                }
+              }
 
               return resolve(trackImage);
 
-  					});
+            });
 
-  				}
-
-	      } else {
-          reject('No track!');
         }
 
+      } else {
+        reject('No track!');
+      }
+
     });
-	}
+  }
 
   getTrackList() {
     return new Promise((resolve, reject) => {
@@ -222,7 +220,6 @@ export default class App extends Component {
       promises.push(this.getCurrentTrack());
       promises.push(this.getCurrentTrackState());
       promises.push(this.getCurrentTrackPosition());
-      promises.push();
 
       Promise.all(promises)
         .then(results => {
@@ -244,8 +241,8 @@ export default class App extends Component {
 
     const that = this;
 
-    this.formState()
-      .catch(error => {
+    this.formState().
+      catch(error => {
 
         that.setState({
           loading: false,
@@ -258,14 +255,18 @@ export default class App extends Component {
       })
       .then(result => {
 
-        that.setState({ tracks: { ...result } });
+        that.setState({
+          tracks: {
+            ...result
+          }
+        });
 
         this.getAlbumArt()
           .catch(error => console.log(error))
           .then(image => {
             let { tracks } = this.state;
             tracks.current.image = image;
-            that.setState({ tracks });
+            that.setState({tracks});
           });
 
         callback();
@@ -274,31 +275,31 @@ export default class App extends Component {
 
   }
 
-	render() {
+  render() {
 
-		const { connecting, connected, loading, loaded, tracks } = this.state;
+    const { connecting, connected, loading, loaded, tracks } = this.state;
 
     return (
     <div>
-  		{connecting && !connected ? (
-  			<p>Connecting to Mopidy...</p>
-  		) : (
+      {connecting && !connected ? (
+        <p>Connecting to Mopidy...</p>
+      ) : (
       <div>
         {loading && !loaded ? (
           <p>Loading tracks...</p>
         ) : (
         <div>
           {tracks && (
-          <div>
-            <Sidebar mopidy={mopidy} current={tracks.current} />
-            <Main mopidy={mopidy} tracks={tracks} />
-          </div>
-		      )}
-	      </div>
+            <div>
+              <Sidebar mopidy={mopidy} current={tracks.current}/>
+              <Main mopidy={mopidy} tracks={tracks}/>
+            </div>
+          )}
+        </div>
         )}
       </div>
       )}
     </div>
     );
-	}
+  }
 }
