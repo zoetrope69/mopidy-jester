@@ -15,3 +15,7 @@ building a music interface for mopidy using react for the household
 ## build
 
 `npm run build`
+
+## credits
+
+stole soundclouds player icons for now
