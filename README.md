@@ -19,3 +19,4 @@ building a music interface for mopidy using react for the household
 ## credits
 
 stole soundclouds player icons for now
+Folder by Mon Aguilar from the Noun Project

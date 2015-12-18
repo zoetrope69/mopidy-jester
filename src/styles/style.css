@@ -9,22 +9,32 @@
 body{
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 300;
+
+  margin-bottom: 100px;
+}
+
+@keyframes hueSpin{
+  to{ -webkit-filter: hue-rotate(360deg); }
 }
 
 .sidebar{
+  z-index: 1;
   position: fixed;
-  width: 20%;
-  left: 0; top: 0; bottom: 0;
+  bottom: 0; left: 0; right: 0;
+  height: 100px;
 
   background: #f5f5f5;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .25);
 }
 
 .sidebar__art{
   overflow: hidden;
   position: relative;
-  background: darkGrey;
-  width: 100%;
-  padding-top: 100%;
+  background: linear-gradient(to bottom left, grey, black);
+  float: left;
+  width: 100px;
+  height: 100px;
+  max-width: 10%;
 }
 
 .sidebar__art__foreground{
@@ -44,51 +54,46 @@ body{
   -webkit-filter: blur(10px);
 }
 
-.sidebar__main{}
+.sidebar__main{
+  float: left;
+  width: 90%;
+}
 
 .progress{
-  display: block;
+  position: relative;
+  float: left;
   width: 100%;
-  height: 10px;
-
-  background-color: rgba(255, 255, 255, .1);
 }
 
 .progress__bar{
-  height: 10px;
+  float: left;
+  height: .25em;
 
-  background-image: linear-gradient(to right, blue, #666);
+  background-image: linear-gradient(to right, blue, purple);
+
+  animation: hueSpin 60s linear infinite;
 }
 
 .progress__details{
   overflow: hidden;
-  margin-bottom: .25em;
-  padding: .5em;
+  padding: .75em;
+  float: right;
+  width: 15%;
+  text-align: right;
 
-  font-size: 9px;
-
-  background: #F1F1F1;
+  font-size: 1em;
 }
 
 .progress__details__current,
 .progress__details__length{
   float: left;
-  width: 45%;
+  width: 50%;
+  padding-left: 1em;
 }
 
 .progress__details__current{
-  color: #000067;
   font-weight: 400;
-}
-
-.progress__details__seperator{
-  float: left;
-  width: 10%;
-
-  color: grey;
-  text-align: center;
-
-  cursor: default;
+  color: red;
 }
 
 .progress__details__length{
@@ -96,30 +101,34 @@ body{
 }
 
 .sidebar__main__details,
-.sidebar__main__controls{
-  padding: .5em;
+.controls{
+  padding: 1em;
   color: #111;
 }
 
 .sidebar__main__details{
-  padding: 2em .75em 0;
-
+  float: left;
+  width: 50%;
   font-size: 1em;
 }
 
 .sidebar__main__details__name{
-  font-weight: 400;
-  color: #000067;
+  color: red;
+  font-weight: 600;
+
+  animation: hueSpin 60s linear infinite;
 }
 
 .controls{
-  padding: 1em 0;
+  float: left;
+  width: 35%;
+  padding: 1.5em 0;
 }
 
 .control{
-  width: 33.33%;
-  height: 46px;
   position: relative;
+  width: 46px;
+  height: 46px;
   float: left;
 
   text-indent: -99999px; /* hide text */
@@ -164,9 +173,7 @@ body{
 }
 
 .main{
-  float: right;
-  width: 80%;
-  padding: 1em;
+  padding: 1em 0;
 }
 
 .tracks{
@@ -175,14 +182,37 @@ body{
 .track{
   overflow: hidden;
   list-style: none;
+  padding: .75em .5em;
+}
+
+.track--playing,
+.track--paused{
+  color: white;
+  font-weight: 600;
 }
 
 .track--playing{
-  color: blue;
+  background: linear-gradient(to right, blue, purple);
+
+  animation: hueSpin 60s linear infinite;
 }
 
 .track--paused{
-  color: red;
+  background: linear-gradient(to right, #111, #666);
+}
+
+.track:hover{
+  color: #131313;
+
+  background: linear-gradient(to right, #D4D4D4, #f1f1f1);
+
+  cursor: pointer;
+}
+
+.track--playing:hover,
+.track--paused:hover{
+  background: black;
+  color: white;
 }
 
 .track__indicator,
@@ -199,11 +229,44 @@ body{
 .track__indicator{
   width: 5%;
 
-  text-align: right;
+  text-align: center;
 }
 
 .track__name{
-  width: 40%;
+  width: 37.5%;
+}
+
+.track__source{
+  float: left;
+  width: 2.5%;
+  height: 1.25em;
+  background-repeat: no-repeat;
+  background-position: 95% center;
+  background-size: auto 100%;
+}
+
+.track--source-local .track__source{
+  background-image: url('../svg/sources/local--black.svg');
+}
+.track--playing.track--source-local .track__source,
+.track--paused.track--source-local .track__source{
+  background-image: url('../svg/sources/local--white.svg');
+}
+
+.track--source-soundcloud .track__source{
+  background-image: url('../svg/sources/soundcloud--black.svg');
+}
+.track--playing.track--source-soundcloud .track__source,
+.track--paused.track--source-soundcloud .track__source{
+  background-image: url('../svg/sources/soundcloud--white.svg');
+}
+
+.track--source-spotify .track__source{
+  background-image: url('../svg/sources/spotify--black.svg');
+}
+.track--playing.track--source-spotify .track__source,
+.track--paused.track--source-spotify .track__source{
+  background-image: url('../svg/sources/spotify--white.svg');
 }
 
 .track--source-soundcloud .track__name{
@@ -223,4 +286,26 @@ body{
 .track__artist > a{
   color: inherit;
   text-decoration: none;
+}
+
+.search{
+  overflow: hidden;
+}
+
+.search__icon{
+  float: left;
+  width: 10%;
+
+  font-size: 1.5em;
+  padding: .25em;
+  text-align: center;
+}
+
+.search__input{
+  float: left;
+  width: 90%;
+
+  padding: 1em;
+  border: 0;
+  border-bottom: dashed 1px;
 }

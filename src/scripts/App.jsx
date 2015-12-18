@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import request from 'superagent';
 import Mopidy from 'mopidy';
-import Sidebar from './Sidebar';
-import Main from './Main';
+import CurrentTrack from './CurrentTrack';
+import TrackList from './TrackList';
+import Search from './Search';
 
 const lastFmApiKey = '2f12beee08b9eaf9baaf1b165b7852d3';
 
@@ -291,8 +292,13 @@ export default class App extends Component {
         <div>
           {tracks && (
             <div>
-              <Sidebar mopidy={mopidy} current={tracks.current}/>
-              <Main mopidy={mopidy} tracks={tracks}/>
+              {/* <Search mopidy={mopidy} /> */}
+              <CurrentTrack mopidy={mopidy} current={tracks.current} />
+              <div className="main">
+                {tracks.list && tracks.list.length > 0 && (
+                  <TrackList mopidy={mopidy} list={tracks.list} current={tracks.current} />
+                )}
+              </div>
             </div>
           )}
         </div>

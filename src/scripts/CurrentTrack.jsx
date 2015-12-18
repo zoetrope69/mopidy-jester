@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class Sidebar extends Component {
+export default class CurrentTrack extends Component {
   static propTypes: {
     mopidy: PropTypes.object.isRequired,
     current: PropTypes.object.isRequired
@@ -66,11 +66,6 @@ export default class Sidebar extends Component {
             <div className="progress">
               <div className="progress__bar" style={{ width: `${progress}%` }}></div>
             </div>
-            <div className="progress__details">
-              <span className="progress__details__current">{this.millisToMinutesAndSeconds(current.position)}</span>
-              <span className="progress__details__seperator">/</span>
-              <span className="progress__details__length">{this.millisToMinutesAndSeconds(current.track.length)}</span>
-            </div>
 
             <div className="sidebar__main__details">
               <p className="sidebar__main__details__name">{current.track.name}</p>
@@ -82,6 +77,11 @@ export default class Sidebar extends Component {
               <button className="control control--previous" onClick={this.previousSong.bind(this)}>Previous</button>
               <button className={`control control--${current.state}`} onClick={this.togglePlaying.bind(this)}>{current.state}</button>
               <button className="control control--next" onClick={this.nextSong.bind(this)}>Next</button>
+            </div>
+
+            <div className="progress__details">
+              <span className="progress__details__current">{this.millisToMinutesAndSeconds(current.position)}</span>
+              <span className="progress__details__length">{this.millisToMinutesAndSeconds(current.track.length)}</span>
             </div>
 
           </div>
