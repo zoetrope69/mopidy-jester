@@ -119,63 +119,70 @@ export default class App extends Component {
     this.setState({ tracks });
   }
 
-  getAlbumArt(size = 'extralarge') {
+  getAlbumArt() {
     return new Promise((resolve, reject) => {
       const that = this;
-
-      const validSizes = ['small', 'medium', 'large', 'extralarge'];
-
-      // is the album art request a valid size
-      if (validSizes.indexOf(size) < 0) {
-        reject();
-      }
-
       const { track } = this.state.tracks.current;
 
-      if (track) {
+      // check if there is already a image in the track object
+      if (track.album && typeof track.album.images !== 'undefined') {
+        return resolve(track.album.images[0]);
+      } else {
 
-        if (track.album && typeof track.album.images !== 'undefined') {
-          return resolve(track.album.images[0]);
-        } else {
+        // look up the image using mopidy
+        mopidy.library.getImages([ [track.uri] ])
+          .then(uris => {
+            const images = uris[track.uri];
+            const image = images[0].uri;
+            return resolve(image);
+          })
+          .catch(() => {
 
-          let trackImage = '';
+            // use last.fm to find any album art
+            const artist = track.artists[0].name;
+            const album = track.album.name;
 
-          const artist = track.artists[0].name;
-          const album = track.album.name;
+            request
+              .post(`http://ws.audioscrobbler.com/2.0/?method=album.getInfo&api_key=${lastFmApiKey}&format=json`)
+              .query({ artist, album })
+              .set('Accept', 'application/json')
+              .end(function(err, res) {
+                if (err) {
+                  console.log(err);
+                  return reject("Couldn't find a image from Last.fm...");
+                }
 
-          request
-            .post(`http://ws.audioscrobbler.com/2.0/?method=album.getInfo&api_key=${lastFmApiKey}&format=json`)
-            .query({ artist, album })
-            .set('Accept', 'application/json')
-            .end(function(err, res) {
-              if (err) {
-                console.log(err);
-                return resolve(trackImage);
-              }
+                const data = res.body;
 
-              const data = res.body;
+                if (data.error) {
+                  return reject(data.message);
+                }
 
-              const images = data.album.image;
+                const images = data.album.image;
 
-              for (var i = 0; i < images.length; i++) {
-                var image = images[i];
+                // let's loop through the images and find the biggest
 
-                // if size specified
-                if (image.size === size) {
-                  if (typeof image['#text'] !== 'undefined' && image['#text'] !== '') {
-                    return resolve(image['#text']);
+                let tempImage = '';
+                for (var i = 0; i < images.length; i++) {
+                  var image = images[i];
+
+                  // if size specified
+                  if (image.size.length > 0) {
+                    tempImage = image['#text'];
                   }
                 }
-              }
 
-              return resolve(trackImage);
+                // if there was an image bring that back
+                if (tempImage.length > 0) {
+                  return resolve(tempImage);
+                }
 
-            });
+                return reject('No image found');
 
-        }
+              });
 
-      } else {
-        reject('No track!');
+          });
+
       }
 
     });
