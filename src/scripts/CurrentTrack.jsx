@@ -51,10 +51,7 @@ export default class CurrentTrack extends Component {
 
         <div className="sidebar__art">
           {current.image && current.image.length > 0 && (
-          <div>
             <img className="sidebar__art__foreground" src={current.image} />
-            <img className="sidebar__art__background" src={current.image} />
-          </div>
           )}
         </div>
 
