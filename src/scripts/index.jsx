@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './App';
 
-require('../styles/style.css');
+require('../styles/style.css'); // bring in styles
 
-React.render(<App/>, document.querySelector('#root'));
+ReactDOM.render(<App/>, document.querySelector('#root'));

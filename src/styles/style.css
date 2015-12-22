@@ -62,21 +62,62 @@ body{
 .progress{
   position: relative;
   float: left;
+  height: 1em;
   width: 100%;
+
+  box-shadow: inset 0 .125em 0 rgba(0, 0, 0, .15);
+  transition: box-shadow .15s;
+}
+
+.sidebar:hover .progress{
+  box-shadow: inset 0 .25em 0 rgba(0, 0, 0, .25);
 }
 
 .progress__bar{
+  position: relative;
   float: left;
   height: .25em;
 
-  background-image: linear-gradient(to right, blue, purple);
+  background: #34344E;
 
-  animation: hueSpin 60s linear infinite;
+  animation: hueSpin 10s linear infinite;
+  transition: height .15s, margin .15s;
+
+  cursor: pointer;
+}
+
+.progress__bar__handle{
+  display: none;
+  content: '';
+  position: absolute;
+  right: -.45em;
+  top: -.13em;
+  width: .5em;
+  height: .5em;
+
+  border-radius: 50%;
+  background: #34344E;
+  box-shadow: 0 0 20px #34344E;
+
+  transition: box-shadow .15s, top .15s, right .15s, width .15s, height .15s, margin .15s;
+}
+
+.sidebar:hover .progress__bar__handle{
+  display: block;
+}
+
+.progress__bar__handle--active{
+  width: 1em;
+  height: 1em;
+  right: -.9em;
+  top: -.25em;
+
+  box-shadow: 0 0 5px #34344E;
 }
 
 .progress__details{
   overflow: hidden;
-  padding: .75em;
+  padding: 2.25em .75em;
   float: right;
   width: 15%;
   text-align: right;
@@ -93,7 +134,9 @@ body{
 
 .progress__details__current{
   font-weight: 400;
-  color: red;
+  color: #34344E;
+
+  animation: hueSpin 10s linear infinite;
 }
 
 .progress__details__length{
@@ -113,22 +156,22 @@ body{
 }
 
 .sidebar__main__details__name{
-  color: red;
+  color: #34344E;
   font-weight: 600;
 
-  animation: hueSpin 60s linear infinite;
+  animation: hueSpin 10s linear infinite;
 }
 
 .controls{
   float: left;
   width: 35%;
-  padding: 1.5em 0;
+  padding: .5em 0;
 }
 
 .control{
   position: relative;
-  width: 46px;
-  height: 46px;
+  width: 70px;
+  height: 70px;
   float: left;
 
   text-indent: -99999px; /* hide text */
@@ -137,6 +180,7 @@ body{
   background-color: transparent;
   background-position: center;
   background-repeat: no-repeat;
+  background-size: 20%;
 
   transition: opacity .1s ease-in;
 
@@ -183,6 +227,7 @@ body{
   overflow: hidden;
   list-style: none;
   padding: .75em .5em;
+  cursor: move;
 }
 
 .track--playing,
@@ -192,9 +237,9 @@ body{
 }
 
 .track--playing{
-  background: linear-gradient(to right, blue, purple);
+  background: linear-gradient(to right, #34344E, #2C3319);
 
-  animation: hueSpin 60s linear infinite;
+  animation: hueSpin 10s linear infinite;
 }
 
 .track--paused{
@@ -205,8 +250,6 @@ body{
   color: #131313;
 
   background: linear-gradient(to right, #D4D4D4, #f1f1f1);
-
-  cursor: pointer;
 }
 
 .track--playing:hover,
@@ -233,12 +276,16 @@ body{
 }
 
 .track__name{
-  width: 37.5%;
+  width: 35%;
+}
+
+.track--source-soundcloud .track__name{
+  width: 62.5%;
 }
 
 .track__source{
   float: left;
-  width: 2.5%;
+  width: 5%;
   height: 1.25em;
   background-repeat: no-repeat;
   background-position: 95% center;
@@ -267,10 +314,6 @@ body{
 .track--playing.track--source-spotify .track__source,
 .track--paused.track--source-spotify .track__source{
   background-image: url('../svg/sources/spotify--white.svg');
-}
-
-.track--source-soundcloud .track__name{
-  width: 67.5%;
 }
 
 .track__album,
