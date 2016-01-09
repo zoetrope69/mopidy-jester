@@ -14,7 +14,7 @@ const trackTarget = {
   connectDropTarget: connect.dropTarget()
 }))
 export default class TrackList extends Component {
-  static propTypes: {
+  static propTypes = {
     tracks: PropTypes.object.isRequired,
     connectDropTarget: PropTypes.func.isRequired,
     moveTrack: PropTypes.func.isRequired,

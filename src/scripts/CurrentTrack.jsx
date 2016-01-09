@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 export default class CurrentTrack extends Component {
-  static propTypes: {
+  static propTypes = {
     current: PropTypes.object,
     toggleTrack: PropTypes.func.isRequired,
     nextTrack: PropTypes.func.isRequired,
@@ -51,11 +51,7 @@ export default class CurrentTrack extends Component {
     const barElemPosition = this.getOffsetRect(barElem).left;
     const handlePosition = event.pageX - barElemPosition;
 
-    console.log(event.pageX, barElemWidth, barElemPosition);
-
     const potentialProgress = Math.floor(handlePosition / barElemWidth * 100);
-
-    console.log('potential', potentialProgress);
 
     this.setState({ potentialProgress });
   }
