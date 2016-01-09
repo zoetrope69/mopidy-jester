@@ -409,10 +409,11 @@ export default class App extends Component {
   }
 
   seekTrack(position) {
-    console.log(position);
-    mopidy.playback.seek({ time_position: position })
-      .catch(error => console.log(error))
-      .then(result => console.log('seeked', result));
+    return new Promise((resolve, reject) => {
+      mopidy.playback.seek({ time_position: position })
+        .catch(error => reject(error))
+        .then(result => resolve('seeked', result));
+    });
   }
 
   render() {

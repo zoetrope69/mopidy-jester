@@ -46,12 +46,16 @@ export default class CurrentTrack extends Component {
   }
 
   handleMouseMove(event) {
-    const barElem = event.target;
+    const barElem = document.querySelector('.progress');
     const barElemWidth = barElem.offsetWidth;
     const barElemPosition = this.getOffsetRect(barElem).left;
     const handlePosition = event.pageX - barElemPosition;
 
+    console.log(event.pageX, barElemWidth, barElemPosition);
+
     const potentialProgress = Math.floor(handlePosition / barElemWidth * 100);
+
+    console.log('potential', potentialProgress);
 
     this.setState({ potentialProgress });
   }
@@ -60,15 +64,16 @@ export default class CurrentTrack extends Component {
     this.setState({ progressDown: true });
   }
 
-  handleMouseUp(event) {
-    console.log('handleMouseUp');
-    this.setState({ progressDown: false });
-
+  handleMouseUp() {
     const { current, seekTrack } = this.props;
     const { potentialProgress } = this.state;
 
     const newPosition = Math.floor(current.track.length * (potentialProgress / 100));
-    seekTrack(newPosition);
+    seekTrack(newPosition)
+      .catch(error => console.log(error))
+      .then(() => {
+        this.setState({ progressDown: false });
+      });
   }
 
   render() {
