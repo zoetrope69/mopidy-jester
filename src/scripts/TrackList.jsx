@@ -7,7 +7,6 @@ import Track from './Track';
 export default class TrackList extends Component {
   static propTypes = {
     tracks: PropTypes.object.isRequired,
-    connectDropTarget: PropTypes.func.isRequired,
     moveTrack: PropTypes.func.isRequired,
     playTrack: PropTypes.func.isRequired,
     findTrack: PropTypes.func.isRequired

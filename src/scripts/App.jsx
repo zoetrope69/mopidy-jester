@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import request from 'superagent';
 import Mopidy from 'mopidy';
+
 import CurrentTrack from './CurrentTrack';
 import TrackList from './TrackList';
+import Search from './Search';
 
 const lastFmApiKey = '2f12beee08b9eaf9baaf1b165b7852d3';
 const mopidyOptions = {
@@ -12,6 +14,7 @@ const mopidyOptions = {
   webSocketUrl: 'ws://music.local:6680/mopidy/ws/',
   callingConvention: 'by-position-or-by-name'
 };
+
 const mopidy = new Mopidy(mopidyOptions);
 
 const timerIncrementAmount = 1000;
@@ -25,10 +28,12 @@ export default class App extends Component {
     this.moveTrack = this.moveTrack.bind(this);
     this.playTrack = this.playTrack.bind(this);
     this.toggleTrack = this.toggleTrack.bind(this);
+    this.addTrack = this.addTrack.bind(this);
     this.nextTrack = this.nextTrack.bind(this);
     this.previousTrack = this.previousTrack.bind(this);
     this.seekTrack = this.seekTrack.bind(this);
     this.findTrack = this.findTrack.bind(this);
+    this.search = this.search.bind(this);
 
     this.state = {
       timeToAttempt: 0,
@@ -195,10 +200,8 @@ export default class App extends Component {
     this.setState({ tracks });
   }
 
-  getAlbumArt() {
+  getAlbumArt(track) {
     return new Promise((resolve, reject) => {
-      const { track } = this.state.tracks.current;
-
       // check if there is already a image in the track object
       if (track.album && typeof track.album.images !== 'undefined') {
         return resolve(track.album.images[0]);
@@ -337,8 +340,9 @@ export default class App extends Component {
         });
 
         if (tracks.current) {
-          this.getAlbumArt()
-            .catch(() => {
+          that.getAlbumArt(tracks.current.track)
+            .catch((error) => {
+              console.log('art error', error);
               const { tracks } = this.state;
               tracks.current.image = '';
               that.setState({ tracks });
@@ -360,6 +364,11 @@ export default class App extends Component {
 
   moveTrack(dragIndex, hoverIndex) {
     mopidy.tracklist.move({ start: dragIndex, end: dragIndex, to_position: hoverIndex})
+      .catch((error) => console.log(error));
+  }
+
+  addTrack(uri) {
+    mopidy.tracklist.add({ uris: [uri] })
       .catch((error) => console.log(error));
   }
 
@@ -404,6 +413,31 @@ export default class App extends Component {
     });
   }
 
+  search(term) {
+    const that = this;
+    return new Promise((resolve, reject) => {
+      mopidy.library.search({ any: [term] })
+        .catch(error => reject(error))
+        .then(results => {
+          console.log('results', results);
+          if (results.length < 1) {
+            reject('No results');
+          }
+
+          const result = results[0];
+
+          result.albums = result.albums.map(album => {
+            that.getAlbumArt(album)
+              .catch(() => console.log('Didnt find album art'))
+              .then(image => album.image = image);
+            return album;
+          });
+
+          resolve(result);
+        });
+    });
+  }
+
   render() {
 
     const { timeToAttempt, error, connecting, connected, loading, loaded, tracks } = this.state;
@@ -429,6 +463,9 @@ export default class App extends Component {
         <div>
           {tracks && (
             <div>
+              <Search
+                addTrack={this.addTrack}
+                search={this.search} />
               <CurrentTrack
                 toggleTrack={this.toggleTrack}
                 nextTrack={this.nextTrack}

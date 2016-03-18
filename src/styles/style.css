@@ -21,7 +21,7 @@ body{
   z-index: 1;
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  height: 100px;
+  height: 15vh;
 
   background: #f5f5f5;
   box-shadow: 0 0 10px rgba(0, 0, 0, .25);
@@ -32,8 +32,8 @@ body{
   position: relative;
   background: linear-gradient(to bottom left, grey, black);
   float: left;
-  width: 100px;
-  height: 100px;
+  width: 15vh;
+  height: 15vh;
 }
 
 .sidebar__art__foreground{
@@ -55,7 +55,7 @@ body{
 
 .sidebar__main{
   float: left;
-  width: calc(100% - 100px);
+  width: calc(100% - 15vh);
 }
 
 .progress{
@@ -219,7 +219,11 @@ body{
 }
 
 .main{
+  float: left;
+  width: 50%;
   padding: 1em 0;
+  overflow-y: scroll;
+  height: 85vh;
 }
 
 .tracks{
@@ -228,6 +232,7 @@ body{
 .track{
   overflow: hidden;
   list-style: none;
+  font-size: .85em;
   padding: .75em .5em;
   cursor: move;
   transform: translateZ(0);
@@ -336,23 +341,100 @@ body{
 }
 
 .search{
+  float: left;
+  width: 50%;
+  height: 85vh;
+  overflow-y: scroll;
+}
+
+.search__heading {
+  flex-basis: 100%;
+  padding: .5em;
+
+  font-weight: 300;
+  font-size: 1em;
+  color: white;
+
+  background: black;
+}
+
+.search__box {
   overflow: hidden;
+
+  padding: 1em;
+
+  background: black;
+  color: white;
 }
 
 .search__icon{
   float: left;
   width: 10%;
+  padding: .25em;
 
   font-size: 1.5em;
-  padding: .25em;
+  color: inherit;
   text-align: center;
+
+  border: 0;
+  background: inherit;
 }
 
 .search__input{
   float: left;
   width: 90%;
-
   padding: 1em;
+
+  color: inherit;
+
   border: 0;
   border-bottom: dashed 1px;
+  background: inherit;
+}
+
+.artists {
+  display: block;
+  overflow: hidden;
+}
+
+.artist {
+  float: left;
+  list-style: none;
+  padding: .5em 1em;
+  margin-bottom: .25em;
+  margin-right: .25em;
+
+  color: white;
+
+  background: #34344E;
+
+  animation: hueSpin 10s linear infinite;
+}
+
+.albums {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.album {
+  list-style: none;
+  width: 16.66%;
+  padding: .5em;
+
+  background: white;
+}
+
+.album__art img{
+  display: block;
+  max-width: 100%;  
+}
+
+.album__name {
+  padding: .5em;
+  overflow: hidden;
+  white-space: nowrap;
+
+  text-overflow: ellipsis;
+  font-weight: 500;
+  font-size: .85em;
 }
