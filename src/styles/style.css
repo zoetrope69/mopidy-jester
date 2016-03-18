@@ -229,6 +229,7 @@ body{
   list-style: none;
   padding: .75em .5em;
   cursor: move;
+  transform: translateZ(0);
 }
 
 .track--playing,
@@ -272,6 +273,7 @@ body{
 
 .track__indicator{
   width: 5%;
+  height: 1em;
 
   text-align: center;
 }

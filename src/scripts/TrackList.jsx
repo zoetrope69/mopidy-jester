@@ -1,18 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { DropTarget, DragDropContext } from 'react-dnd';
+import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import ItemTypes from './ItemTypes';
 import Track from './Track';
 
-const trackTarget = {
-  drop() {
-  }
-};
-
 @DragDropContext(HTML5Backend)
-@DropTarget(ItemTypes.TRACK, trackTarget, connect => ({
-  connectDropTarget: connect.dropTarget()
-}))
 export default class TrackList extends Component {
   static propTypes = {
     tracks: PropTypes.object.isRequired,
@@ -27,20 +18,21 @@ export default class TrackList extends Component {
   }
 
   render() {
-    const { connectDropTarget } = this.props;
-    const { tracks: { list, current }, moveTrack, playTrack } = this.props;
+    const { tracks: { list, current }, findTrack, moveTrack, playTrack } = this.props;
 
-    return connectDropTarget(
+    return (
       <ul className="tracks">
         {list.map((item, i) => {
           return (
-            <Track key={item.tlid + i}
+            <Track key={item.tlid}
                    index={i}
-                   id={item.tlid + i}
+                   id={i}
                    item={item}
                    current={current}
                    playTrack={playTrack}
-                   moveTrack={moveTrack} />
+                   moveTrack={moveTrack}
+                   findTrack={findTrack}
+                   />
           );
         })}
       </ul>

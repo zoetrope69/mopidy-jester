@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import update from 'react/lib/update';
 import request from 'superagent';
 import Mopidy from 'mopidy';
 import CurrentTrack from './CurrentTrack';
@@ -29,6 +28,7 @@ export default class App extends Component {
     this.nextTrack = this.nextTrack.bind(this);
     this.previousTrack = this.previousTrack.bind(this);
     this.seekTrack = this.seekTrack.bind(this);
+    this.findTrack = this.findTrack.bind(this);
 
     this.state = {
       timeToAttempt: 0,
@@ -359,25 +359,13 @@ export default class App extends Component {
   }
 
   moveTrack(dragIndex, hoverIndex) {
-    const { tracks: { list } } = this.state;
-    const dragTrack = list[dragIndex];
-
-    this.setState(update(this.state, {
-      tracks: {
-        list: {
-          $splice: [
-            [dragIndex, 1],
-            [hoverIndex, 0, dragTrack]
-          ]
-        }
-      }
-    }));
+    mopidy.tracklist.move({ start: dragIndex, end: dragIndex, to_position: hoverIndex})
+      .catch((error) => console.log(error));
   }
 
   playTrack(tlid) {
     mopidy.playback.play([null, tlid])
-      .catch((error) => console.log(error))
-      .then(() => console.log('playing'));
+      .catch((error) => console.log(error));
   }
 
   toggleTrack() {
@@ -400,11 +388,11 @@ export default class App extends Component {
 
   findTrack(id) {
     const { tracks: { list } } = this.state;
-    const track = list.filter(t => t.id === id)[0];
+    const track = list[id];
 
     return {
       track,
-      index: list.indexOf(track)
+      index: id
     };
   }
 
@@ -441,7 +429,6 @@ export default class App extends Component {
         <div>
           {tracks && (
             <div>
-              {/* <Search mopidy={mopidy} /> */}
               <CurrentTrack
                 toggleTrack={this.toggleTrack}
                 nextTrack={this.nextTrack}
@@ -455,6 +442,7 @@ export default class App extends Component {
                     tracks={tracks}
                     playTrack={this.playTrack}
                     moveTrack={this.moveTrack}
+                    findTrack={this.findTrack}
                     />
                 )}
               </div>
