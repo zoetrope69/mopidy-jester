@@ -34,7 +34,6 @@ body{
   float: left;
   width: 100px;
   height: 100px;
-  max-width: 10%;
 }
 
 .sidebar__art__foreground{
@@ -56,7 +55,7 @@ body{
 
 .sidebar__main{
   float: left;
-  width: 90%;
+  width: calc(100% - 100px);
 }
 
 .progress{
