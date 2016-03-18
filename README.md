@@ -12,9 +12,9 @@ building a music interface for mopidy using react for the household
 1. `npm run dev`
 2. go to http://localhost:8080/
 
-## build
+## deploy
 
-`npm run build`
+`npm run deploy`
 
 ## credits
 

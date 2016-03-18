@@ -3,7 +3,8 @@
   "version": "0.5.0",
   "description": "building a music interface for mopidy using react for the household",
   "scripts": {
-    "build": "webpack --progress --profile --colors",
+    "deploy": "npm run build && surge --project ./public/ --domain jest.surge.sh",
+    "build": "webpack --config webpack.config.production.js --progress --profile --colors",
     "dev": "webpack-dev-server --progress --profile --colors --hot"
   },
   "author": "Zac Colley <hi@zaccolley.com> (http://zaccolley.com)",
@@ -26,8 +27,9 @@
     "file-loader": "^0.8.4",
     "react-hot-loader": "^1.2.7",
     "style-loader": "^0.12.4",
+    "surge": "^0.17.7",
     "url-loader": "^0.5.6",
-    "webpack-dev-server": "^1.9.0",
-    "webpack": "^1.9.11"
+    "webpack": "^1.9.11",
+    "webpack-dev-server": "^1.9.0"
   }
 }

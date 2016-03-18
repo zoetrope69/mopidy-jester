@@ -11,7 +11,7 @@ const mopidyOptions = {
   autoConnect: true,
   backoffDelayMin: 4000,
   backoffDelayMax: 64000,
-  webSocketUrl: 'ws://music.local:6680/mopidy/ws/',
+  webSocketUrl: 'ws://192.168.0.22:6680/mopidy/ws/',
   callingConvention: 'by-position-or-by-name'
 };
 
