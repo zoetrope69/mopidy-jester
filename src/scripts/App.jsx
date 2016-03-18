@@ -9,7 +9,7 @@ const mopidyOptions = {
   autoConnect: true,
   backoffDelayMin: 4000,
   backoffDelayMax: 64000,
-  webSocketUrl: 'ws://localhost:6680/mopidy/ws/',
+  webSocketUrl: 'ws://music.local:6680/mopidy/ws/',
   callingConvention: 'by-position-or-by-name'
 };
 const mopidy = new Mopidy(mopidyOptions);
