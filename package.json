@@ -3,7 +3,7 @@
   "version": "0.5.0",
   "description": "building a music interface for mopidy using react for the household",
   "scripts": {
-    "deploy": "npm run build && surge --project ./public/ --domain jest.surge.sh",
+    "deploy": "npm run build && surge --project ./public/ --domain music.jester.network",
     "build": "webpack --config webpack.config.production.js --progress --profile --colors",
     "dev": "webpack-dev-server --progress --profile --colors --hot"
   },
