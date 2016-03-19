@@ -422,7 +422,7 @@ export default class App extends Component {
   search(term) {
     const that = this;
     return new Promise((resolve, reject) => {
-      mopidy.library.search({ any: [term] })
+      mopidy.library.search({ any: term.split(' ') })
         .catch(error => reject(error))
         .then(results => {
           console.log('results', results);
@@ -430,16 +430,38 @@ export default class App extends Component {
             reject('No results');
           }
 
-          const result = results[0];
+          const newResults = {
+            albums: [],
+            artists: [],
+            tracks: []
+          };
 
-          result.albums = result.albums.map(album => {
+          function processAlbum(album) {
             that.getAlbumArt(album)
               .catch(() => console.log('Didnt find album art'))
               .then(image => album.image = image);
             return album;
-          });
+          }
 
-          resolve(result);
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+
+            if (result.albums) {
+              result.albums = result.albums.map(processAlbum);
+
+              newResults.albums = newResults.albums.concat(result.albums);
+            }
+
+            if (result.artists) {
+              newResults.artists = newResults.artists.concat(result.artists);
+            }
+
+            if (result.tracks) {
+              newResults.tracks = newResults.tracks.concat(result.tracks);
+            }
+          }
+
+          resolve(newResults);
         });
     });
   }
