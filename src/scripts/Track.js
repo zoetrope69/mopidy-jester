@@ -73,6 +73,7 @@ const trackTarget = {
 export default class Track extends Component {
   static propTypes = {
     connectDragSource: PropTypes.func.isRequired,
+    connectDropTarget: PropTypes.func.isRequired,
     index: PropTypes.number.isRequired,
     isDragging: PropTypes.bool.isRequired,
     id: PropTypes.any.isRequired,
@@ -80,11 +81,12 @@ export default class Track extends Component {
     current: PropTypes.object.isRequired,
     moveTrack: PropTypes.func.isRequired,
     playTrack: PropTypes.func.isRequired,
+    removeTrack: PropTypes.func.isRequired,
     findTrack: PropTypes.func.isRequired
   };
 
   render() {
-    const { playTrack, item, current, isDragging, connectDragSource, connectDropTarget } = this.props;
+    const { removeTrack, playTrack, item, current, isDragging, connectDragSource, connectDropTarget } = this.props;
     const opacity = isDragging ? 0 : 1;
 
     let isCurrentTrack = false;
@@ -101,23 +103,26 @@ export default class Track extends Component {
     return connectDragSource(connectDropTarget(
       <li style={{ opacity }}
           className={`track track--source-${trackSource}` + (isCurrentTrack ? ` track--${current.state}` : '')}
-          onClick={playTrack.bind(this, item.tlid)}>
+          >
+        <div onClick={playTrack.bind(this, item.tlid)}>
+          <div className="track__indicator">{isCurrentTrack ? '🔊' : '▶'}</div>
 
-        <div className="track__indicator">{isCurrentTrack ? '🔊' : ' '}</div>
+          <div className="track__name">{item.track.name}</div>
 
-        <div className="track__name">{item.track.name}</div>
+          {trackSource !== 'soundcloud' && (
+            <div className="track__album">
+              {typeof item.track.album !== 'undefined' && item.track.album.name}
+            </div>
+          )}
 
-        {trackSource !== 'soundcloud' && (
-          <div className="track__album">
-            {typeof item.track.album !== 'undefined' && item.track.album.name}
+          <div className="track__artists">
+            {typeof item.track.artists !== 'undefined' && item.track.artists[0].name}
           </div>
-        )}
-
-        <div className="track__artists">
-          {typeof item.track.artists !== 'undefined' && item.track.artists[0].name}
         </div>
 
-        <div className="track__source" />
+        <button className="track__delete" onClick={removeTrack.bind(this, item.tlid)}>✖</button>
+
+        <div className="track__source"></div>
 
       </li>
     ));

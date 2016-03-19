@@ -9,6 +9,7 @@ export default class TrackList extends Component {
     tracks: PropTypes.object.isRequired,
     moveTrack: PropTypes.func.isRequired,
     playTrack: PropTypes.func.isRequired,
+    removeTrack: PropTypes.func.isRequired,
     findTrack: PropTypes.func.isRequired
   }
 
@@ -17,7 +18,7 @@ export default class TrackList extends Component {
   }
 
   render() {
-    const { tracks: { list, current }, findTrack, moveTrack, playTrack } = this.props;
+    const { tracks: { list, current }, findTrack, moveTrack, playTrack, removeTrack } = this.props;
 
     return (
       <ul className="tracks">
@@ -29,6 +30,7 @@ export default class TrackList extends Component {
                    item={item}
                    current={current}
                    playTrack={playTrack}
+                   removeTrack={removeTrack}
                    moveTrack={moveTrack}
                    findTrack={findTrack}
                    />

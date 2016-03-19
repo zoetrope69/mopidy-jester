@@ -29,6 +29,7 @@ export default class App extends Component {
     this.playTrack = this.playTrack.bind(this);
     this.toggleTrack = this.toggleTrack.bind(this);
     this.addTrack = this.addTrack.bind(this);
+    this.removeTrack = this.removeTrack.bind(this);
     this.nextTrack = this.nextTrack.bind(this);
     this.previousTrack = this.previousTrack.bind(this);
     this.seekTrack = this.seekTrack.bind(this);
@@ -372,6 +373,11 @@ export default class App extends Component {
       .catch((error) => console.log(error));
   }
 
+  removeTrack(tlid) {
+    mopidy.tracklist.remove({ tlid: [tlid] })
+      .catch((error) => console.log(error));
+  }
+
   playTrack(tlid) {
     mopidy.playback.play([null, tlid])
       .catch((error) => console.log(error));
@@ -480,6 +486,7 @@ export default class App extends Component {
                     playTrack={this.playTrack}
                     moveTrack={this.moveTrack}
                     findTrack={this.findTrack}
+                    removeTrack={this.removeTrack}
                     />
                 )}
               </div>
