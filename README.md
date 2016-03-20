@@ -1,4 +1,4 @@
-# music.jester.network
+# mopidy-jester
 
 building a music interface for mopidy using react for the household
 
