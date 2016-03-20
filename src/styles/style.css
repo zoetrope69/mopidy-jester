@@ -445,6 +445,7 @@ body{
   float: left;
   padding: 1em 1em;
 
+  font: inherit;
   font-size: 1.5em;
   color: inherit;
 
