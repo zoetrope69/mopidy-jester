@@ -81,17 +81,34 @@ export default class CurrentTrack extends Component {
         {results.tracks.length > 0 && (
         <div className="tracks">
           <h2 className="search__heading">Tracks</h2>
-          {results.tracks.map((track, i) =>
-            <li key={i} className="track" onClick={this.handleClick.bind(this, track.uri)}>
+          {results.tracks.map((track, i) => {
+            let trackSource = 'unknown';
+            if (track.uri.indexOf(':')) {
+              trackSource = track.uri.substr(0, track.uri.indexOf(':'));
+            }
+
+            return (
+            <li key={i} className={`track track--source-${trackSource}`} onClick={this.handleClick.bind(this, track.uri)}>
+
+              <div className="track__indicator">➕</div>
 
               <div className="track__name">{track.name}</div>
+
+              {trackSource !== 'soundcloud' && (
+                <div className="track__album">
+                  {typeof track.album !== 'undefined' && track.album.name}
+                </div>
+              )}
 
               <div className="track__artists">
                 {typeof track.artists !== 'undefined' && track.artists[0].name}
               </div>
 
+              <div className="track__source"></div>
+
             </li>
-          )}
+            );
+          })}
         </div>
         )}
 
