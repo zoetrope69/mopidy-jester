@@ -321,7 +321,9 @@ export default class App extends Component {
                 return resolve(tlTrack);
               });
             })
-            .catch(reject);
+            .catch(() => {
+              return resolve(tlTrack);
+            });
         });
     });
   }
