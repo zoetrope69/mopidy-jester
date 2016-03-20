@@ -232,10 +232,31 @@ body{
 .track{
   overflow: hidden;
   list-style: none;
-  font-size: .85em;
   padding: .75em .5em;
+
+  font-size: .85em;
+
   cursor: move;
   transform: translateZ(0);
+}
+
+.track__gif,
+.track__art {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+
+  background-size: cover;
+  background-position: center;
+
+  opacity: .15;
+}
+
+.track__gif {
+  z-index: -1;
+}
+
+.track__art {
+  z-index: -2;
 }
 
 .track--playing,
@@ -245,25 +266,32 @@ body{
 }
 
 .track--playing{
-  background: linear-gradient(to right, #34344E, #2C3319);
+  padding: 2em .5em;
 
-  animation: hueSpin 10s linear infinite;
+  background: #111;
 }
 
 .track--paused{
-  background: linear-gradient(to right, #111, #666);
+  background: #666;
 }
 
 .track:hover{
   color: #131313;
 
-  background: linear-gradient(to right, #D4D4D4, #f1f1f1);
+  background-image: linear-gradient(to right, #D4D4D4, #f1f1f1);
 }
 
 .track--playing:hover,
 .track--paused:hover{
-  background: black;
+  background: #111;
   color: white;
+}
+
+.track--playing:hover .track__art,
+.track--playing:hover .track__gif,
+.track--paused:hover .track__art,
+.track--paused:hover .track__gif{
+  opacity: 0;
 }
 
 .track__indicator,

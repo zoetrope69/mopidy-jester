@@ -104,6 +104,8 @@ export default class Track extends Component {
       <li style={{ opacity }}
           className={`track track--source-${trackSource}` + (isCurrentTrack ? ` track--${current.state}` : '')}
           >
+        <div className="track__art" style={isCurrentTrack ? { backgroundImage: `url(${current.image})` } : {}} />
+        <div className="track__gif" style={isCurrentTrack ? { backgroundImage: `url(${current.gif})` } : {}} />
         <div onClick={playTrack.bind(this, item.tlid)}>
           <div className="track__indicator">{isCurrentTrack ? '🔊' : '▶'}</div>
 

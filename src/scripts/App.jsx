@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import request from 'superagent';
 import Mopidy from 'mopidy';
+const giphy = require('giphy-api')();
 
 import CurrentTrack from './CurrentTrack';
 import TrackList from './TrackList';
@@ -50,7 +51,8 @@ export default class App extends Component {
           track: {},
           position: 0,
           state: '',
-          image: ''
+          image: '',
+          info: {}
         }
       }
     };
@@ -65,7 +67,7 @@ export default class App extends Component {
 
     that.setState({ connecting: true });
 
-    mopidy.on(console.log.bind(console));
+    // mopidy.on(console.log.bind(console));
 
     mopidy.on('websocket:error', () => {
       console.log('error websocket');
@@ -201,6 +203,28 @@ export default class App extends Component {
     this.setState({ tracks });
   }
 
+  getTrackInfo(track, artist) {
+    return new Promise((resolve, reject) => {
+      request
+        .post(`https://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${lastFmApiKey}&format=json`)
+        .query({ artist, track })
+        .set('Accept', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            return reject("Couldn't find a info from Last.fm...");
+          }
+
+          const data = res.body;
+
+          if (data.error) {
+            return reject(data.message);
+          }
+
+          resolve(data.track);
+        });
+    });
+  }
+
   getAlbumArt(track) {
     return new Promise((resolve, reject) => {
       // check if there is already a image in the track object
@@ -272,7 +296,33 @@ export default class App extends Component {
     return new Promise((resolve, reject) => {
       mopidy.playback.getCurrentTlTrack()
         .catch(error => reject(error))
-        .then(tlTrack => resolve(tlTrack));
+        .then(tlTrack => {
+          if (!tlTrack.track || !tlTrack.track.name || !tlTrack.track.artists) {
+            return resolve(tlTrack);
+          }
+
+          const trackName = tlTrack.track.name;
+          const trackArtist = tlTrack.track.artists[0].name;
+
+          this.getTrackInfo(trackName, trackArtist)
+            .then((info) => {
+              tlTrack.info = info;
+
+              let tag = 'music';
+              const tags = info.toptags.tag;
+              if (tags && tags.length > 0) {
+                tag = tags[0].name;
+              }
+
+              giphy.random(tag).then((res) => {
+                const gif = res.data.fixed_height_downsampled_url;
+                tlTrack.gif = gif;
+
+                return resolve(tlTrack);
+              });
+            })
+            .catch(reject);
+        });
     });
   }
 
