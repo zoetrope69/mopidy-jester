@@ -416,43 +416,48 @@ body{
 
   font-weight: 300;
   font-size: 1em;
-  color: white;
+  color: black;
 
   background: black;
+}
+
+.result--youtube .search__heading {
+  background: #cd201f;
+}
+
+.result--soundcloud .search__heading {
+  background: #ff8800;
+}
+
+.result--spotify .search__heading {
+  background: #2ebd59;
 }
 
 .search__box {
   overflow: hidden;
 
-  padding: 1em;
-
   background: black;
   color: white;
 }
 
-.search__icon{
+.search__icon,
+.search__input{
   float: left;
-  width: 10%;
-  padding: .25em;
+  padding: 1em 1em;
 
   font-size: 1.5em;
   color: inherit;
-  text-align: center;
 
   border: 0;
   background: inherit;
 }
 
+.search__icon{
+  width: 10%;
+}
+
 .search__input{
-  float: left;
   width: 90%;
-  padding: 1em;
-
-  color: inherit;
-
-  border: 0;
-  border-bottom: dashed 1px;
-  background: inherit;
 }
 
 .artists {
@@ -500,4 +505,48 @@ body{
   text-overflow: ellipsis;
   font-weight: 500;
   font-size: .85em;
+}
+
+.filters {
+  display: flex;
+}
+
+.filter {
+  flex-grow: 1;
+  padding: 1em;
+
+  color: white;
+  font-weight: 800;
+  text-transform: uppercase;
+
+  border: 0;
+  background: black;
+  background-repeat: no-repeat;
+  background-position: 5% center;
+  background-size: auto 50%;
+
+  cursor: pointer;
+}
+
+.filter--youtube {
+  background-color: #cd201f;
+}
+
+.filter--soundcloud {
+  background-color: #ff8800;
+  background-image: url('../svg/sources/soundcloud--white.svg');
+}
+.filter--active.filter--soundcloud {
+  background-image: url('../svg/sources/soundcloud--black.svg');
+}
+
+.filter--spotify {
+  background-color: #2ebd59;
+}
+.filter--active.filter--spotify {
+  background-image: url('../svg/sources/spotify--black.svg');
+}
+
+.filter--active {
+  color: black;
 }

@@ -477,16 +477,9 @@ export default class App extends Component {
       mopidy.library.search({ any: term.split(' ') })
         .catch(error => reject(error))
         .then(results => {
-          console.log('results', results);
           if (results.length < 1) {
             reject('No results');
           }
-
-          const newResults = {
-            albums: [],
-            artists: [],
-            tracks: []
-          };
 
           function processAlbum(album) {
             that.getAlbumArt(album)
@@ -500,20 +493,10 @@ export default class App extends Component {
 
             if (result.albums) {
               result.albums = result.albums.map(processAlbum);
-
-              newResults.albums = newResults.albums.concat(result.albums);
-            }
-
-            if (result.artists) {
-              newResults.artists = newResults.artists.concat(result.artists);
-            }
-
-            if (result.tracks) {
-              newResults.tracks = newResults.tracks.concat(result.tracks);
             }
           }
 
-          resolve(newResults);
+          resolve(results);
         });
     });
   }
