@@ -508,7 +508,7 @@ export default class App extends Component {
     const timeToAttemptSeconds = Math.floor((timeToAttempt + 1) / 1000);
 
     if (tracks.current && tracks.current.track && tracks.current.track.name && tracks.current.track.artists.length > 0) {
-      document.title = `${tracks.current.state === 'playing' ? '🔊' : ''} ${tracks.current.track.name} - ${tracks.current.track.artists[0].name} | music.jester.network`;
+      document.title = `${tracks.current.state === 'playing' ? '🎶' : ''} ${tracks.current.track.name} - ${tracks.current.track.artists[0].name} | music.jester.network`;
     }
 
     return (
