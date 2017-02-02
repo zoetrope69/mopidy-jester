@@ -1,5 +1,7 @@
 # mopidy-jester
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zaccolley/mopidy-jester.svg)](https://greenkeeper.io/)
+
 building a music interface for mopidy using react for the household
 
 ## install
